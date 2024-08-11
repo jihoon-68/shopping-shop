@@ -41,9 +41,11 @@
                         </li>
                     </ul>
                     <form class="d-flex">
+                        <!-- 장바구니 템플릿으로 변경을위한 onclick 추가-->
                         <button class="btn btn-outline-dark" type="button" onclick="opeShopping()">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
+                            <!-- 장바구니에 삼품 추가되면 숫자 증가 하기위해 ID 추가-->
                             <span class="badge bg-dark text-white ms-1 rounded-pill" id="alarm">0</span>
                         </button>
                     </form>
@@ -73,7 +75,8 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-
+        
+        <!-- 메인화면 삼품 템플릿-->
         <script script type="text/template" id="divTemplate">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <% 
@@ -102,6 +105,7 @@
             </div>
         </script>
 
+        <!-- 장바구니 삼품 템플릿-->
         <script script type="text/template" id="shoppingTemplate">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <% 
@@ -132,6 +136,7 @@
             </div>
             <hr/>
             <div>
+                <!-- 장바구니에 있는 상품 값 다 더하기-->
                 <%
                 var sumPrice= 0;
                 shoppingCart.forEach(function(item){
@@ -212,7 +217,11 @@
                 }
             }
 
+            //장바구니에 상품 추가되면 장바구니 버튼에 숫자 변환하는 함수
             function alarm (num){
+                //매개변수 있으면 그거 사용하고
+                //없으면 장바구니 리스트 길이 들고 왔어 작성
+                //장바구니 리스트도 없으면 그냥 0작성
                 if(num){
                     $("#alarm").text(num);
                 }else{
@@ -227,6 +236,7 @@
             }
             alarm();
 
+            //메인 템플릿 추가
             function loadData() {
                 var productList = JSON.parse(localStorage.getItem("productList"));
                 var compiled = _.template($('#divTemplate').html());
@@ -234,6 +244,7 @@
                 $('div#showcase').html(html);
             }
 
+            //장바구니 템플릿로 변경
             function opeShopping() {
                 
                 if(JSON.parse(sessionStorage.getItem("shoppingCart"))){
