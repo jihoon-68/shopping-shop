@@ -132,11 +132,17 @@
             </div>
             <hr/>
             <div>
-                가격: <p id="price"></p>
+                <%
+                var sumPrice= 0;
+                shoppingCart.forEach(function(item){
+                    sumPrice += item.price;
+                });
+                %>
+                <h1>가격: <%= sumPrice %>원</h1>
+                
             </div>
         </script>
         <script>
-            
             function appendCart(btn) {
                 if(sessionStorage.getItem("shoppingCart")){
                     var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
