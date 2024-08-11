@@ -130,6 +130,10 @@
                 </div>
                 <% }); %>
             </div>
+            <hr/>
+            <div>
+                가격: <p id="price"></p>
+            </div>
         </script>
         <script>
             
@@ -138,43 +142,48 @@
                     var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
                     //console.log(1)
                 }else{
-                    var shoppingCart =[];
-                    //console.log(2)
+                    var shoppingCart = [];
+                    console.log(2);
                 }
                 console.log(shoppingCart)
                 var productList = JSON.parse(localStorage.getItem("productList"));
-                var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
                 var btnNo = $(btn).parent().parent().data('no');
                 var idx = productList.findIndex(function(i){
                     return i.no == btnNo;
-                })
+                });
                 
-                var idx = productList.findIndex(function(i){
-                    return i.no == btnNo;
-                })
-                //같은 제품이 드어오면 갯수만 증가
-                //새로운 물품이들어 오면 장바구니에 추가
                 var duplication = shoppingCart.findIndex(function(i){
                     return i.no == btnNo;
-                })
-                //console.log(duplication)
+                });
+
+                //같은 제품이 드어오면 갯수만 증가
+                //새로운 물품이들어 오면 장바구니에 추가
+                console.log(duplication)
                 if(duplication == -1){
                     shoppingCart.push({no:productList[idx].no,name:productList[idx].name,price:productList[idx].price,num: 1});
+                    alarm(shoppingCart.length);
                 }else{
                     shoppingCart[duplication].num +=1;
+                    shoppingCart[duplication].price +=shoppingCart[duplication].price;
                 }
+                sessionStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
                 
                 //console.log(shoppingCart)
-                sessionStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
-                alarm(shoppingCart.length);
+                
             }
 
+            //장바구니 삭제
             function removeendCart(btn){
                 var btnNo = $(btn).parent().parent().data('no');
                 var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
                 var duplication = shoppingCart.findIndex(function(i){
                     return i.no == btnNo;
                 })
+                shoppingCart.splice(duplication,1);
+                console.log(shoppingCart)
+                sessionStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
+                opeShopping();
+                alarm();
                 
             }
             function init() {
