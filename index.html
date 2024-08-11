@@ -103,7 +103,31 @@
         </script>
 
         <script script type="text/template" id="shoppingTemplate">
-
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <% 
+                productList.forEach(function(item) {
+                %>
+                <div class="col mb-5">
+                    <div class="card h-100" data-no="<%= item.no %>">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder"><%= item.name %></h5>
+                                <!-- Product price-->
+                                <%= item.price %>
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" style="text-align: center">
+                            <button class="btn btn-outline-dark mt-auto" onclick="appendCart(this)" type="button">장바구니에 추가</button>
+                        </div>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
         </script>
         <script>
             
@@ -171,8 +195,8 @@
 
             function opeShopping() {
                 
-                if(JSON.parse(sessionStorage.getItem("productList"))){
-                    var productList = JSON.parse(sessionStorage.getItem("productList"));
+                if(JSON.parse(sessionStorage.getItem("shoppingCart"))){
+                    var productList = JSON.parse(sessionStorage.getItem("shoppingCart"));
                 }else{
                     var productList =[];
                 }
