@@ -105,7 +105,7 @@
         <script script type="text/template" id="shoppingTemplate">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <% 
-                productList.forEach(function(item) {
+                shoppingCart.forEach(function(item) {
                 %>
                 <div class="col mb-5">
                     <div class="card h-100" data-no="<%= item.no %>">
@@ -118,11 +118,13 @@
                                 <h5 class="fw-bolder"><%= item.name %></h5>
                                 <!-- Product price-->
                                 <%= item.price %>
+                                <br/>
+                                <%= item.num %> 개
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent" style="text-align: center">
-                            <button class="btn btn-outline-dark mt-auto" onclick="appendCart(this)" type="button">장바구니에 추가</button>
+                            <button class="btn btn-outline-dark mt-auto" onclick="removeendCart(this)" type="button">장바구니에 삭제</button>
                         </div>
                     </div>
                 </div>
@@ -134,22 +136,46 @@
             function appendCart(btn) {
                 if(sessionStorage.getItem("shoppingCart")){
                     var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
-                    console.log(1)
+                    //console.log(1)
                 }else{
                     var shoppingCart =[];
-                    console.log(2)
+                    //console.log(2)
                 }
                 console.log(shoppingCart)
                 var productList = JSON.parse(localStorage.getItem("productList"));
-                var $row = $(btn).parent().parent().data('no');
-                var idx = productList.findIndex(function(t){
-                    return t.no == $row;
+                var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
+                var btnNo = $(btn).parent().parent().data('no');
+                var idx = productList.findIndex(function(i){
+                    return i.no == btnNo;
                 })
-                console.log(idx);
-
-                shoppingCart.push(productList[idx]);
+                
+                var idx = productList.findIndex(function(i){
+                    return i.no == btnNo;
+                })
+                //같은 제품이 드어오면 갯수만 증가
+                //새로운 물품이들어 오면 장바구니에 추가
+                var duplication = shoppingCart.findIndex(function(i){
+                    return i.no == btnNo;
+                })
+                //console.log(duplication)
+                if(duplication == -1){
+                    shoppingCart.push({no:productList[idx].no,name:productList[idx].name,price:productList[idx].price,num: 1});
+                }else{
+                    shoppingCart[duplication].num +=1;
+                }
+                
+                //console.log(shoppingCart)
                 sessionStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
                 alarm(shoppingCart.length);
+            }
+
+            function removeendCart(btn){
+                var btnNo = $(btn).parent().parent().data('no');
+                var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
+                var duplication = shoppingCart.findIndex(function(i){
+                    return i.no == btnNo;
+                })
+                
             }
             function init() {
                 if(!localStorage.getItem("productList")) {
@@ -196,12 +222,12 @@
             function opeShopping() {
                 
                 if(JSON.parse(sessionStorage.getItem("shoppingCart"))){
-                    var productList = JSON.parse(sessionStorage.getItem("shoppingCart"));
+                    var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
                 }else{
-                    var productList =[];
+                    var shoppingCart =[];
                 }
                 var compiled = _.template($('#shoppingTemplate').html());
-                var html = compiled({productList: productList});
+                var html = compiled({shoppingCart: shoppingCart});
                 $('div#showcase').html(html);
             }
 
