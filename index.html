@@ -82,7 +82,7 @@
                 <div class="col mb-5">
                     <div class="card h-100" data-no="<%= item.no %>">
                         <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <img class="card-img-top" src="<%=item.png%>" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -110,7 +110,7 @@
                 <div class="col mb-5">
                     <div class="card h-100" data-no="<%= item.no %>">
                         <!-- Product image-->
-                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <img class="card-img-top" src="<%=item.png%>" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -166,7 +166,7 @@
                 //새로운 물품이들어 오면 장바구니에 추가
                 console.log(duplication)
                 if(duplication == -1){
-                    shoppingCart.push({no:productList[idx].no,name:productList[idx].name,price:productList[idx].price,num: 1});
+                    shoppingCart.push({no:productList[idx].no,name:productList[idx].name,png:productList[idx].png,price:productList[idx].price,num: 1});
                     alarm(shoppingCart.length);
                 }else{
                     shoppingCart[duplication].num +=1;
@@ -195,20 +195,20 @@
             function init() {
                 if(!localStorage.getItem("productList")) {
                     var list = [
-                        {"no":1,"name":"냉장고","price":300},
-                        {"no":2,"name":"세탁기","price":200},
-                        {"no":3,"name":"오디오","price":100},
-                        {"no":4,"name":"테레비","price":150},
-                        {"no":5,"name":"압력솥","price":50},
-                        {"no":6,"name":"에어콘","price":100},
-                        {"no":7,"name":"건조기","price":100},
-                        {"no":8,"name":"전자랜지","price":20},
-                        {"no":9,"name":"에어프라이기","price":30}
+                        {"no":1,"name":"벨트1","png":"png/download5.jpg","price":300},
+                        {"no":2,"name":"벨트2","png":"png/download4.jpg","price":200},
+                        {"no":3,"name":"청바지1","png":"png/download1.jpg","price":100},
+                        {"no":4,"name":"청바지2","png":"png/download2.jpg","price":150},
+                        {"no":5,"name":"청바지3","png":"png/download3.jpg","price":50},
+                        {"no":6,"name":"흰티","png":"png/download6.jpg","price":100},
+                        {"no":7,"name":"검은티","png":"png/download7.jpg","price":100},
+                        {"no":8,"name":"셔츠","png":"png/download8.jpg","price":20},
+                        {"no":9,"name":"셔츠2","png":"png/download9.jpg","price":30}
                     ];
                     // productList는 localStorage에 저장하고
                     // 장바구니는 sessionStorage에 저장한다.
                     localStorage.setItem("productList", JSON.stringify(list));
-                    localStorage.setItem("topNo", "" + getTopNo(list));
+                    localStorage.setItem("topNo", "" + list.length);
                 }
             }
 
