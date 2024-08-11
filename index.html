@@ -28,7 +28,7 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="http://127.0.0.1:5500/index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -108,9 +108,24 @@
         <script>
             
             function appendCart(btn) {
-                var $row = $(btn).parent().parent();
-                console.log($row);
-                console.log(noVal, eaVal);
+                if(sessionStorage.getItem("shoppingCart")){
+                    var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
+                    console.log(1)
+                }else{
+                    var shoppingCart =[];
+                    console.log(2)
+                }
+                console.log(shoppingCart)
+                var productList = JSON.parse(localStorage.getItem("productList"));
+                var $row = $(btn).parent().parent().data('no');
+                var idx = productList.findIndex(function(t){
+                    return t.no == $row;
+                })
+                console.log(idx);
+
+                shoppingCart.push(productList[idx]);
+                sessionStorage.setItem("shoppingCart",JSON.stringify(shoppingCart));
+                alarm(shoppingCart.length);
             }
             function init() {
                 if(!localStorage.getItem("productList")) {
@@ -132,15 +147,20 @@
                 }
             }
 
-            /*function alarm (num){
+            function alarm (num){
                 if(num){
                     $("#alarm").text(num);
                 }else{
-                    
+                    var shoppingCart = JSON.parse(sessionStorage.getItem("shoppingCart"));
+                    if(!shoppingCart){
+                        $("#alarm").text('0');
+                        return;
+                    }
+                    $("#alarm").text(shoppingCart.length);
                 }
 
             }
-            alarm();*/
+            alarm();
 
             function loadData() {
                 var productList = JSON.parse(localStorage.getItem("productList"));
